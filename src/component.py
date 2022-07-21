@@ -88,7 +88,6 @@ class Component(ComponentBase):
 
         records = []
         for review in reviews:
-            print (review)
             if (review.get('response') is None):
                 records.append({
                     'app_name': review['app_var']['name'],
@@ -130,7 +129,12 @@ class Component(ComponentBase):
         with open(table.full_path, mode='wt', encoding='utf-8', newline='') as out_file:
             writer = csv.DictWriter(
                 out_file,
-                fieldnames=['app_name', 'platform', 'device_manufacturer', 'device_model', 'review_polarity', 'review_tags', 'review_score', 'review_text', 'review_author', 'review_time', 'response_time', 'response_text', 'response_author']
+                fieldnames=[
+                    'app_name', 'platform', 'device_manufacturer', 'device_model',
+                    'review_polarity', 'review_tags', 'review_score', 'review_text',
+                    'review_author', 'review_time', 'response_time', 'response_text',
+                    'response_author'
+                ]
             )
             writer.writeheader()
             writer.writerows(records)
