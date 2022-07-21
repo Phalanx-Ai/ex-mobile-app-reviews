@@ -39,7 +39,7 @@ def login(email, password, hostname):
 def get_data(token, hostname, params):
     response = requests.request(
         "GET",
-        "https://%s/api/dashboard/getRatingsInTime" % (hostname),
+        "https://%s/api/reviews/getAllReviewsWithoutPaging" % (hostname),
         params=params,
         headers={
             'Content-Type': "application/json",
@@ -76,52 +76,61 @@ class Component(ComponentBase):
 
         applications = params[KEY_APPLICATIONS].split(",")
 
-        resp_google = get_data(
+        response = get_data(
             token,
             params[KEY_SERVER_HOSTNAME],
             {
                 'application': applications,
-                'dateFrom': DATE_FROM,
-                'platform': 'google'
+                'dateFrom': DATE_FROM
             }
         )
-        ratings_google = json.loads(resp_google.text).get('ratings')
-
-        resp_apple = get_data(
-            token,
-            params[KEY_SERVER_HOSTNAME],
-            {
-                'application': applications,
-                'dateFrom': DATE_FROM,
-                'platform': 'apple'
-            }
-        )
-        ratings_apple = json.loads(resp_apple.text).get('ratings')
+        reviews = json.loads(response.text).get('results')
 
         records = []
-        for app in ratings_apple + ratings_google:
-            for r in app['ratings']:
+        for review in reviews:
+            print (review)
+            if (review.get('response') is None):
                 records.append({
-                    'platform': app['app']['platform'],
-                    'app-name': app['app']['label'],
-                    'date': r['date'],
-                    'stars1': r['stars1'],
-                    'stars2': r['stars2'],
-                    'stars3': r['stars3'],
-                    'stars4': r['stars4'],
-                    'stars5': r['stars5']
+                    'app_name': review['app_var']['name'],
+                    'platform': review['app_var']['platform'],
+                    'device_manufacturer': review['content']['device_manufacturer'],
+                    'device_model': review['content']['device_model'],
+                    'review_polarity': review['content']['polarity'],
+                    'review_tags': review['content']['tags'],
+                    'review_score': review['content']['score'],
+                    'review_text': review['content']['text'],
+                    'review_author': review['user_name'],
+                    'review_time': review['content']['review_time'],
+                    'response_time': None,
+                    'response_text': None,
+                    'response_author': None,
+                })
+            else:
+                records.append({
+                    'app_name': review['app_var']['name'],
+                    'platform': review['app_var']['platform'],
+                    'device_manufacturer': review['content']['device_manufacturer'],
+                    'device_model': review['content']['device_model'],
+                    'review_polarity': review['content']['polarity'],
+                    'review_tags': review['content']['tags'],
+                    'review_score': review['content']['score'],
+                    'review_text': review['content']['text'],
+                    'review_author': review['user_name'],
+                    'review_time': review['content']['review_time'],
+                    'response_time': review.get('response', {}).get('end_time', None),
+                    'response_text': review.get('response', {}).get('text', None),
+                    'response_author': review.get('response', {}).get('user', {}).get('email', None),
                 })
 
         result_filename = self.configuration.tables_output_mapping[0]['source']
         table = self.create_out_table_definition(
             result_filename,
-            primary_key=['app-name', 'platform', 'date']
         )
 
         with open(table.full_path, mode='wt', encoding='utf-8', newline='') as out_file:
             writer = csv.DictWriter(
                 out_file,
-                fieldnames=['app-name', 'platform', 'date', 'stars1', 'stars2', 'stars3', 'stars4', 'stars5']
+                fieldnames=['app_name', 'platform', 'device_manufacturer', 'device_model', 'review_polarity', 'review_tags', 'review_score', 'review_text', 'review_author', 'review_time', 'response_time', 'response_text', 'response_author']
             )
             writer.writeheader()
             writer.writerows(records)

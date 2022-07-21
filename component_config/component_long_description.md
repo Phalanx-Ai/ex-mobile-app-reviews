@@ -1,4 +1,4 @@
-## Extractor of mobile app ratings for Google Play and App Store
+## Extractor of mobile app reviews for Google Play and App Store
 
 Sirius offers data of ratings and reviews for mobile application from public and private sources for Google Play, App Store and Huawei Gallery. These data are sold separately, for 1 eur (+VAT) / application & store & region. Feel free to contact us on <sales@phalanx.ai>.
 

@@ -1,1 +1,1 @@
-The extractor for application rating for mobile applications (via Sirius)
+The extractor for application reviews for mobile applications (via Sirius)
