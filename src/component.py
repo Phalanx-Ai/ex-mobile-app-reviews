@@ -88,38 +88,31 @@ class Component(ComponentBase):
 
         records = []
         for review in reviews:
-            if (review.get('response') is None):
-                records.append({
+            rec = {
                     'app_name': review['app_var']['name'],
                     'platform': review['app_var']['platform'],
                     'device_manufacturer': review['content']['device_manufacturer'],
                     'device_model': review['content']['device_model'],
-                    'review_polarity': review['content']['polarity'],
-                    'review_tags': review['content']['tags'],
+                    'review_polarity': review['content'].get('polarity', None),
+                    'review_tags': review['content'].get('tags', None),
                     'review_score': review['content']['score'],
                     'review_text': review['content']['text'],
                     'review_author': review['user_name'],
-                    'review_time': review['content']['review_time'],
+                    'review_time': review['content']['review_time']
+            }
+            if (review.get('response') is None):
+                rec.update({
                     'response_time': None,
                     'response_text': None,
                     'response_author': None,
                 })
             else:
-                records.append({
-                    'app_name': review['app_var']['name'],
-                    'platform': review['app_var']['platform'],
-                    'device_manufacturer': review['content']['device_manufacturer'],
-                    'device_model': review['content']['device_model'],
-                    'review_polarity': review['content']['polarity'],
-                    'review_tags': review['content']['tags'],
-                    'review_score': review['content']['score'],
-                    'review_text': review['content']['text'],
-                    'review_author': review['user_name'],
-                    'review_time': review['content']['review_time'],
+                rec.update({
                     'response_time': review.get('response', {}).get('end_time', None),
                     'response_text': review.get('response', {}).get('text', None),
                     'response_author': review.get('response', {}).get('user', {}).get('email', None),
                 })
+            records.append(rec)
 
         result_filename = self.configuration.tables_output_mapping[0]['source']
         table = self.create_out_table_definition(
