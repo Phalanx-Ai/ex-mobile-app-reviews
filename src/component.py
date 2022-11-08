@@ -17,6 +17,7 @@ KEY_APPLICATIONS = 'applications'
 REQUIRED_PARAMETERS = [KEY_USERNAME, KEY_PASSWORD, KEY_APPLICATIONS, KEY_SERVER_HOSTNAME]
 REQUIRED_IMAGE_PARS = []
 
+
 def login(email, password, hostname):
     response = requests.request(
         "POST",
