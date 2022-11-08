@@ -74,7 +74,7 @@ class Component(ComponentBase):
         )
 
         applications = params[KEY_APPLICATIONS].split(",")
-        DATE_FROM = (datetime.datetime.now() - datetime.timedelta(days=180)).strftime('%Y-%m-%d')
+        DATE_FROM = (datetime.datetime.now() - datetime.timedelta(days=60)).strftime('%Y-%m-%d')
 
         response = get_data(
             token,
