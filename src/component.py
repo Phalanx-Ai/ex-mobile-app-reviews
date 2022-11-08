@@ -3,6 +3,7 @@ import logging
 import requests
 import json
 import sys
+import datetime
 
 from keboola.component.base import ComponentBase
 from keboola.component.exceptions import UserException
@@ -15,9 +16,6 @@ KEY_APPLICATIONS = 'applications'
 
 REQUIRED_PARAMETERS = [KEY_USERNAME, KEY_PASSWORD, KEY_APPLICATIONS, KEY_SERVER_HOSTNAME]
 REQUIRED_IMAGE_PARS = []
-
-DATE_FROM = '2000-01-01'
-
 
 def login(email, password, hostname):
     response = requests.request(
@@ -75,6 +73,7 @@ class Component(ComponentBase):
         )
 
         applications = params[KEY_APPLICATIONS].split(",")
+        DATE_FROM = (datetime.datetime.now() - datetime.timedelta(days=180)).strftime('%Y-%m-%d')
 
         response = get_data(
             token,
