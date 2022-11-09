@@ -12,6 +12,7 @@ A configuration consists of mandatory parameters.
 * password - Password used to authorize to Sirius API
 * hostname - Hostname of Sirius API server
 * applications - ID of monitored applications (separated by commas)
+* lastdays - Days back reporting interval (default 60)
 
 ## Output
 

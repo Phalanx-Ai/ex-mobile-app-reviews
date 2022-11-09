@@ -13,6 +13,7 @@ KEY_USERNAME = 'username'
 KEY_PASSWORD = '#password'
 KEY_SERVER_HOSTNAME = 'hostname'
 KEY_APPLICATIONS = 'applications'
+KEY_HISTORY = 'lastdays'
 
 REQUIRED_PARAMETERS = [KEY_USERNAME, KEY_PASSWORD, KEY_APPLICATIONS, KEY_SERVER_HOSTNAME]
 REQUIRED_IMAGE_PARS = []
@@ -73,8 +74,10 @@ class Component(ComponentBase):
             params[KEY_SERVER_HOSTNAME]
         )
 
+        HISTORY = params[KEY_HISTORY]
+
         applications = params[KEY_APPLICATIONS].split(",")
-        DATE_FROM = (datetime.datetime.now() - datetime.timedelta(days=60)).strftime('%Y-%m-%d')
+        DATE_FROM = (datetime.datetime.now() - datetime.timedelta(days=HISTORY)).strftime('%Y-%m-%d')
 
         response = get_data(
             token,

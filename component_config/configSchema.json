@@ -24,6 +24,11 @@
     "applications": {
       "type": "string",
       "title": "ID of applications (comma separated)"
+    },
+    "lastdays": {
+      "type": "number",
+      "title": "Days back reporting interval",
+      "default": 60
     }
   }
 }
