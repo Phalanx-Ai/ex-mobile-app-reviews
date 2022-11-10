@@ -102,13 +102,11 @@ class Component(ComponentBase):
                     'review_text': review['content']['text'],
                     'review_author': review['user_name'],
                     'review_time': review['content']['review_time'],
-                    'id' : review['id'],
+                    'id': review['id'],
                     'external_id': review['external_id'],
                     'app_version': review['content']['app_version'],
                     'os_version': review['content']['device_os'],
-                    'review_title': review['content']['title'],
-                    'device_manufacturer': review['content']['device_manufacturer'],
-                    'device_model': review['content']['device_model']
+                    'review_title': review['content']['title']
             }
             if (review.get('response') is None):
                 rec.update({
