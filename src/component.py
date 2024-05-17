@@ -120,6 +120,15 @@ class Component(ComponentBase):
                     'response_text': review.get('response', {}).get('text', None),
                     'response_author': review.get('response', {}).get('user', {}).get('email', None),
                 })
+            if (review.get('labels') is None):
+                rec.update({
+                    'labels': None
+                })
+            else:
+                rec.update({
+                    'labels': ",".join(review.get('labels'))
+                })
+
             records.append(rec)
 
         result_filename = self.configuration.tables_output_mapping[0]['source']
