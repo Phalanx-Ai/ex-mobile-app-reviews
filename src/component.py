@@ -125,8 +125,9 @@ class Component(ComponentBase):
                     'labels': None
                 })
             else:
+                label_names = [x['name'] for x in review.get('labels')]
                 rec.update({
-                    'labels': ",".join(review.get('labels'))
+                    'labels': ",".join(label_names)
                 })
 
             records.append(rec)
