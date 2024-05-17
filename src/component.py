@@ -144,7 +144,7 @@ class Component(ComponentBase):
                     'review_polarity', 'review_tags', 'review_score', 'review_text',
                     'review_author', 'review_time', 'response_time', 'response_text',
                     'response_author', 'id', 'external_id', 'app_version', 'os_version',
-                    'review_title'
+                    'review_title', 'labels'
                 ]
             )
             writer.writeheader()
